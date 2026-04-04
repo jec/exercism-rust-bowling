@@ -7,9 +7,19 @@ use crate::Error;
 /// A frame with no rolls; first roll pending
 #[derive(Debug)]
 pub struct Pending {
-    pub frame_number: u16,
-    pub score: u16,
-    pub bonuses: Multiplier,
+    frame_number: u16,
+    score: u16,
+    bonuses: Multiplier,
+}
+
+impl Pending {
+    pub fn new(frame_number: u16, score: u16, bonuses: Multiplier) -> Self {
+        Self {
+            frame_number,
+            score,
+            bonuses,
+        }
+    }
 }
 
 impl Frame for Pending {
@@ -25,7 +35,7 @@ impl Frame for Pending {
 
         if pins == 10 {
             if self.frame_number == 9 {
-                Ok(Box::new(TenthPending { score, bonuses }))
+                Ok(Box::new(TenthPending::new(score, bonuses)))
             } else {
                 Ok(Box::new(Pending {
                     frame_number: self.frame_number + 1,
@@ -34,12 +44,12 @@ impl Frame for Pending {
                 }))
             }
         } else {
-            Ok(Box::new(Open {
-                frame_number: self.frame_number,
-                pins: 10 - pins,
+            Ok(Box::new(Open::new(
+                self.frame_number,
+                10 - pins,
                 score,
                 bonuses,
-            }))
+            )))
         }
     }
 

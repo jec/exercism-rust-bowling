@@ -7,7 +7,13 @@ use crate::Error;
 /// This is the only frame that will return a score.
 #[derive(Debug)]
 pub struct TenthClosed {
-    pub score: u16,
+    score: u16,
+}
+
+impl TenthClosed {
+    pub fn new(score: u16) -> Self {
+        Self { score }
+    }
 }
 
 impl Frame for TenthClosed {

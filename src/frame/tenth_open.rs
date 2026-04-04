@@ -7,9 +7,19 @@ use crate::Error;
 /// A 10th frame with one roll that was not a strike; second roll pending
 #[derive(Debug)]
 pub struct TenthOpen {
-    pub pins: u16,
-    pub score: u16,
-    pub bonuses: Multiplier,
+    pins: u16,
+    score: u16,
+    bonuses: Multiplier,
+}
+
+impl TenthOpen {
+    pub fn new(pins: u16, score: u16, bonuses: Multiplier) -> Self {
+        Self {
+            pins,
+            score,
+            bonuses,
+        }
+    }
 }
 
 impl Frame for TenthOpen {
@@ -25,10 +35,10 @@ impl Frame for TenthOpen {
 
         if pins == self.pins {
             // Player rolled a spare; award a third roll in this 10th frame.
-            Ok(Box::new(TenthFinal { pins: 10, score }))
+            Ok(Box::new(TenthFinal::new(10, score)))
         } else {
             // The game is over.
-            Ok(Box::new(TenthClosed { score }))
+            Ok(Box::new(TenthClosed::new(score)))
         }
     }
 

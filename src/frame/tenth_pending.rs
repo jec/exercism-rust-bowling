@@ -7,8 +7,14 @@ use crate::Error;
 /// A 10th frame with no rolls; first roll pending
 #[derive(Debug)]
 pub struct TenthPending {
-    pub score: u16,
-    pub bonuses: Multiplier,
+    score: u16,
+    bonuses: Multiplier,
+}
+
+impl TenthPending {
+    pub fn new(score: u16, bonuses: Multiplier) -> Self {
+        Self { score, bonuses }
+    }
 }
 
 impl Frame for TenthPending {
@@ -29,15 +35,11 @@ impl Frame for TenthPending {
         if pins == 10 {
             // If first roll in 10th frame is a strike, progress to the
             // `TenthStrike` frame so the player gets a third roll.
-            Ok(Box::new(TenthStrike { score, bonuses }))
+            Ok(Box::new(TenthStrike::new(score, bonuses)))
         } else {
             // Else progress to the `TenthOpen` frame so the player requires a
             // spare on the second roll to get a third.
-            Ok(Box::new(TenthOpen {
-                pins: 10 - pins,
-                score,
-                bonuses,
-            }))
+            Ok(Box::new(TenthOpen::new(10 - pins, score, bonuses)))
         }
     }
 

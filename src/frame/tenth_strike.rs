@@ -9,8 +9,14 @@ use crate::Error;
 /// has 10 pins.
 #[derive(Debug)]
 pub struct TenthStrike {
-    pub score: u16,
-    pub bonuses: Multiplier,
+    score: u16,
+    bonuses: Multiplier,
+}
+
+impl TenthStrike {
+    pub fn new(score: u16, bonuses: Multiplier) -> Self {
+        TenthStrike { score, bonuses }
+    }
 }
 
 impl Frame for TenthStrike {
@@ -23,10 +29,10 @@ impl Frame for TenthStrike {
         }
 
         // Advance to the third and final roll in frame 10.
-        Ok(Box::new(TenthFinal {
-            pins: if pins == 10 { 10 } else { 10 - pins },
-            score: self.score + pins * self.bonuses.multiplier(),
-        }))
+        Ok(Box::new(TenthFinal::new(
+            if pins == 10 { 10 } else { 10 - pins },
+            self.score + pins * self.bonuses.multiplier(),
+        )))
     }
 
     // Returns `None` since the game isn't finished

@@ -15,8 +15,14 @@ use crate::Error;
 /// `bonuses` attribute.
 #[derive(Debug)]
 pub struct TenthFinal {
-    pub pins: u16,
-    pub score: u16,
+    pins: u16,
+    score: u16,
+}
+
+impl TenthFinal {
+    pub fn new(pins: u16, score: u16) -> Self {
+        Self { pins, score }
+    }
 }
 
 impl Frame for TenthFinal {
@@ -31,9 +37,7 @@ impl Frame for TenthFinal {
             return Err(Error::NotEnoughPinsLeft);
         }
 
-        Ok(Box::new(TenthClosed {
-            score: self.score + pins,
-        }))
+        Ok(Box::new(TenthClosed::new(self.score + pins)))
     }
 
     // Returns `None` since the game isn't finished

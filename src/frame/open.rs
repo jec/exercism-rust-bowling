@@ -7,10 +7,21 @@ use crate::Error;
 /// A frame with one roll that was not a strike; second roll pending
 #[derive(Debug)]
 pub struct Open {
-    pub frame_number: u16,
-    pub pins: u16,
-    pub score: u16,
-    pub bonuses: Multiplier,
+    frame_number: u16,
+    pins: u16,
+    score: u16,
+    bonuses: Multiplier,
+}
+
+impl Open {
+    pub fn new(frame_number: u16, pins: u16, score: u16, bonuses: Multiplier) -> Self {
+        Open {
+            frame_number,
+            pins,
+            score,
+            bonuses,
+        }
+    }
 }
 
 impl Frame for Open {
@@ -26,14 +37,14 @@ impl Frame for Open {
 
         if self.frame_number == 9 {
             // Advance to 10th frame.
-            Ok(Box::new(TenthPending { score, bonuses }))
+            Ok(Box::new(TenthPending::new(score, bonuses)))
         } else {
             // Advance to next frame.
-            Ok(Box::new(Pending {
-                frame_number: self.frame_number + 1,
+            Ok(Box::new(Pending::new(
+                self.frame_number + 1,
                 score,
                 bonuses,
-            }))
+            )))
         }
     }
 
