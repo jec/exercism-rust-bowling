@@ -3,7 +3,10 @@ use crate::frame::Frame;
 use crate::multiplier::Multiplier;
 use crate::Error;
 
-/// A tenth frame with one roll that was a strike; second and third rolls pending
+/// A 10th frame with one roll that was a strike; second and third rolls pending
+///
+/// No `pins` attribute: Since the 10th frame started with a strike, this one
+/// always has 10 pins.
 #[derive(Debug)]
 pub struct TenthStrike {
     pub score: u16,
@@ -11,6 +14,7 @@ pub struct TenthStrike {
 }
 
 impl Frame for TenthStrike {
+    // Applies a roll and returns the next `Frame` object
     fn roll(&mut self, pins: u16) -> Result<Box<dyn Frame>, Error> {
         println!("roll({:?}, {})", self, pins);
 
@@ -18,19 +22,13 @@ impl Frame for TenthStrike {
             return Err(Error::NotEnoughPinsLeft);
         }
 
-        // No bonuses carry over to next roll.
-        let (score, _bonuses) = self.bonuses.calculate_score(pins, 10, self.score);
-
-        if pins == 10 {
-            Ok(Box::new(TenthFinal { pins: 10, score }))
-        } else {
-            Ok(Box::new(TenthFinal {
-                pins: 10 - pins,
-                score,
-            }))
-        }
+        Ok(Box::new(TenthFinal {
+            pins: if pins == 10 { 10 } else { 10 - pins },
+            score: self.score + pins * self.bonuses.multiplier(),
+        }))
     }
 
+    // Returns `None` since the game isn't finished
     fn score(&self) -> Option<u16> {
         None
     }

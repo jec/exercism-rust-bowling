@@ -14,6 +14,7 @@ pub struct Open {
 }
 
 impl Frame for Open {
+    // Applies a roll and returns the next `Frame` object
     fn roll(&mut self, pins: u16) -> Result<Box<dyn Frame>, Error> {
         println!("roll({:?}, {})", self, pins);
 
@@ -44,6 +45,7 @@ impl Frame for Open {
         }
     }
 
+    // Returns `None` since the game isn't finished
     fn score(&self) -> Option<u16> {
         None
     }

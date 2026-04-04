@@ -13,6 +13,7 @@ pub struct Pending {
 }
 
 impl Frame for Pending {
+    // Applies a roll and returns the next `Frame` object
     fn roll(&mut self, pins: u16) -> Result<Box<dyn Frame>, Error> {
         println!("roll({:?}, {})", self, pins);
 
@@ -42,6 +43,7 @@ impl Frame for Pending {
         }
     }
 
+    // Returns `None` since the game isn't finished
     fn score(&self) -> Option<u16> {
         None
     }
