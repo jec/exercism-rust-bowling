@@ -1,0 +1,42 @@
+@startuml
+hide empty description
+state "Frame 1" as Frame1 {
+  state FirstPending
+  state "Open" as Open1
+}
+state "Frame 2" as Frame2 {
+  state "Pending" as Pending2
+  state "Open" as Open2
+}
+state "Frame 3 – Frame 9" as FrameN {
+  state "Pending" as PendingN
+  state "Open" as OpenN
+}
+state "Frame 10" as Frame10 {
+  state TenthPending
+  state TenthOpen
+  state TenthStrike
+  state TenthFinal
+  state TenthClosed
+}
+
+[*] -> FirstPending
+FirstPending -right-> Pending2 : Strike
+FirstPending -down-> Open1 : Other
+Open1 -up-> Pending2 : All
+
+Pending2 -> PendingN : Strike
+Pending2 -down-> Open2 : Other
+Open2 -up-> PendingN : All
+
+PendingN -right-> TenthPending : Strike
+PendingN -down-> OpenN : Other
+OpenN -up-> TenthPending : All
+
+TenthPending -down-> TenthStrike : Strike
+TenthPending -down-> TenthOpen : Other
+TenthStrike -down-> TenthFinal : All
+TenthOpen -down-> TenthFinal : Strike
+TenthOpen -down-> TenthClosed : Other
+TenthFinal -down-> TenthClosed : All
+@enduml
