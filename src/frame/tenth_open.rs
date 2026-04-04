@@ -24,10 +24,10 @@ impl Frame for TenthOpen {
         let score = self.score + pins * self.bonuses.multiplier();
 
         if pins == self.pins {
-            // If player rolled a spare, give them a third roll in this 10th frame.
+            // Player rolled a spare; award a third roll in this 10th frame.
             Ok(Box::new(TenthFinal { pins: 10, score }))
         } else {
-            // Else the game is over.
+            // The game is over.
             Ok(Box::new(TenthClosed { score }))
         }
     }

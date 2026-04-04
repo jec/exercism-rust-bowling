@@ -5,8 +5,8 @@ use crate::Error;
 
 /// A 10th frame with one roll that was a strike; second and third rolls pending
 ///
-/// No `pins` attribute: Since the 10th frame started with a strike, this one
-/// always has 10 pins.
+/// No `pins` attribute: Since frame 10 started with a strike, this one always
+/// has 10 pins.
 #[derive(Debug)]
 pub struct TenthStrike {
     pub score: u16,
@@ -22,6 +22,7 @@ impl Frame for TenthStrike {
             return Err(Error::NotEnoughPinsLeft);
         }
 
+        // Advance to the third and final roll in frame 10.
         Ok(Box::new(TenthFinal {
             pins: if pins == 10 { 10 } else { 10 - pins },
             score: self.score + pins * self.bonuses.multiplier(),
