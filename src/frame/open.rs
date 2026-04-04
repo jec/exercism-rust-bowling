@@ -24,19 +24,11 @@ impl Frame for Open {
 
         let (score, bonuses) = self.bonuses.calculate_score(pins, self.pins, self.score);
 
-        if pins == self.pins {
-            if self.frame_number == 9 {
-                Ok(Box::new(TenthPending { score, bonuses }))
-            } else {
-                Ok(Box::new(Pending {
-                    frame_number: self.frame_number + 1,
-                    score,
-                    bonuses,
-                }))
-            }
-        } else if self.frame_number == 9 {
+        if self.frame_number == 9 {
+            // Advance to 10th frame.
             Ok(Box::new(TenthPending { score, bonuses }))
         } else {
+            // Advance to next frame.
             Ok(Box::new(Pending {
                 frame_number: self.frame_number + 1,
                 score,
