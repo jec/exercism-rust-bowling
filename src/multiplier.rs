@@ -11,15 +11,15 @@
 ///
 /// State table:
 ///
-/// ```ignore
-///     | ↓ Current state; Input → | Strike   | Spare  | Open |
-///     |--------------------------|----------|--------|------|
-///     | One                      | TwoTwo   | Two    | One  |
-///     | Two                      | TwoTwo   | Two    | One  |
-///     | Three                    | TwoTwo   | Two    | One  |
-///     | TwoTwo                   | ThreeTwo | Three* | Two  |
-///     | ThreeTwo                 | ThreeTwo | Three* | Two  |
-/// ```
+/// | ↓ Current state |          |        |      |
+/// |         Input → | Strike   | Spare  | Open |
+/// |    Next state ↘ |          |        |      |
+/// |-----------------|----------|--------|------|
+/// | One             | TwoTwo   | Two    | One  |
+/// | Two             | TwoTwo   | Two    | One  |
+/// | Three           | TwoTwo   | Two    | One  |
+/// | TwoTwo          | ThreeTwo | Three* | Two  |
+/// | ThreeTwo        | ThreeTwo | Three* | Two  |
 ///
 /// * This appears impossible. Read the comment on the variant `Three` below.
 #[derive(Debug, PartialEq)]
